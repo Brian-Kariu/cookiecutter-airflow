@@ -1,0 +1,65 @@
+[project]
+name = "cookiecutter-airflow"
+version = "0.0.1"
+description = "A Cookiecutter template for creating production-ready data engineering projects quickly."
+readme = "README.md"
+keywords = [
+  "cookiecutter",
+  "airflow",
+  "project template",
+  "scaffolding",
+  "skeleton",
+]
+license = { text = "MIT" }
+authors = [
+  { name = "Brian Kariu", email = "waiganjo.brian@gmail.com" },
+]
+requires-python = ">=3.12,<3.13"
+classifiers = [
+  "Development Status :: 4 - Alpha",
+  "Environment :: Console",
+  "Framework :: Django :: 5.0",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: English",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Topic :: Software Development",
+]
+dependencies = [
+  "apache-airflow==2.10.0",
+  "cookiecutter==2.6",
+  "pre-commit==4.1.0",
+  "pytest==8.3.5",
+  "pytest-cov==6.1.1",
+  "ruff==0.11.4",
+  "tox==4.23.2",
+  "toml==0.10.2"
+]
+urls = { Repository = "https://github.com/Brian-Kariu/cookiecutter-airflow" }
+
+[dependency-groups]
+docs = [
+  "sphinx>=8.0.2",
+  "sphinx-rtd-theme>=3",
+]
+
+[tool.pyproject-fmt]
+keep_full_version = true
+
+# ==== pytest ====
+
+[tool.pytest.ini_options]
+addopts = '-v --ignore="\{\{cookiecutter.project_slug\}\}/" --tb=short'
+norecursedirs = [
+  ".tox",
+  ".git",
+  "*/migrations/*",
+  "*/static/*",
+  "docs",
+  "venv",
+  "*/{{cookiecutter.project_slug}}/*",
+]
+

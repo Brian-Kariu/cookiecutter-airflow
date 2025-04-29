@@ -1,0 +1,155 @@
+[build-system]
+requires = ["hatchling", "hatch-requirements-txt"]
+build-backend = "hatchling.build"
+
+[project]
+name = "{{cookiecutter.project_slug}}"
+description = "{{cookiecutter.description}}"
+readme = "README.md"
+requires-python = ">={{cookiecutter.python_version}}"
+version="0.0.1"
+authors = [
+  { name="{{cookiecutter.author_name}}", email = "{{cookiecutter.email}}"},
+]
+maintainers = [
+  {name = "{{cookiecutter.author_name}}", email = "{{cookiecutter.email}}"},
+]
+license = { file = "LICENSE.txt" }
+keywords = ["python", "analytics"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Libraries",
+  "Programming Language :: Python :: {{cookiecutter.python_version}}",
+  "Private :: Do Not Upload",
+]
+dependencies = [
+  "hatch",
+  "commitizen",
+  "pre-commit"
+]
+
+[project.optional-dependencies]
+airflow = [
+  "apache-airflow=={{cookiecutter.airflow_version}}",
+]
+test = [
+  "pytest",
+  "tox",
+  "coverage",
+  "pytest-mock",
+  "ruff",
+  "python-dotenv",
+  "mypy",
+  "sphinx",
+  "sphinx-rtd-theme",
+]
+
+[tool.hatch.envs.airflow]
+python-version = "{{cookiecutter.airflow_version}}"
+description = """
+  Run a specific version of airfllow.
+"""
+features = [
+  "airflow",
+  "test",
+]
+pre-install-commands = [
+  "set -a ",
+  "source env.sh"
+]
+
+[project.urls]
+Homepage = "{{cookiecutter.git_repo}}"
+Documentation = "{{cookiecutter.git_repo}}/wiki"
+Repository = "{{cookiecutter.git_repo}}"
+"Bug Tracker" = "{{cookiecutter.git_repo}}/issues"
+Changelog = "{{cookiecutter.git_repo}}/blob/master/CHANGELOG.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["airflow/dags"]
+
+[tool.hatch.build.targets.sdist]
+exclude = ["/.github", "/docs", "/deploy"]
+
+[tool.ruff]
+exclude = [
+    ".eggs",
+    ".git",
+    ".mypy_cache",
+    ".nox",
+    ".pytype",
+    ".ruff_cache",
+    ".tox",
+    ".venv",
+    "__pycache__",
+    "__pypackages__",
+    "_build",
+    "build",
+    "dist",
+    "docs",
+    "node_modules",
+    "venv",
+]
+line-length = 88
+indent-width = 4
+
+target-version = ""
+
+[tool.ruff.lint]
+select = [   "E",
+  "F",
+  "UP",
+  "B",
+  "SIM",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = false
+
+[tool.mypy]
+python_version = "{{cookiecutter.python_version}}"
+exclude =  ["tests"]
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+norecursedirs = "venv build env bin .cache .tox"
+addopts = "--junitxml='junitxml_report/report.xml' -vv --durations=10 --cache-clear"
+minversion = "6.0.0"
+log_cli = 1
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+log_cli_format = "[%(levelname)8s]-%(asctime)s (%(filename)s:%(lineno)s) - %(message)s"
+log_cli_level = "WARNING"
+junit_family = "xunit1"
+
+[tool.coverage.run]
+command_line = "-m pytest"
+include = ["airflow"]
+omit = ["*/tests/*"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 100
+show_missing = true
+ignore_errors = true
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version_files = [
+    "airflow/dags/__init__.py",
+]
+tag_format = "v$version"
+version_scheme = "pep440"
+version_provider = "pep621"
+update_changelog_on_bump = true
+major_version_zero = true
+pre_bump_hooks = [
+    "scripts/generate_release_notes.sh"
+]

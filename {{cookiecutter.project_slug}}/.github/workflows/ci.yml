@@ -1,0 +1,43 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.12]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python {{ cookiecutter.python_version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ cookiecutter.python_version }}
+
+      - name: Upgrade pip
+        run: |
+          python -m pip install --upgrade pip
+
+      - name: Install project dependencies
+        run: |
+          pip install .
+
+      - name: Install cookiecutter-generated package dependencies
+        working-directory: data_engineering
+        run: |
+          pip install ".[airflow,test]"
+
+      - name: Run tests
+        working-directory: data_engineering
+        run: |
+          make test
+
+      - name: Test and Coverage
+        run: python -m pytest --cov --cov-report json
