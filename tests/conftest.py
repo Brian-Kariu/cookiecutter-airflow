@@ -97,7 +97,7 @@ def variable_project_context(default_context):
     return _modify_context
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture()
 def create_project_with_context(cookiecutter_template_path, tmp_path):
     """Create a project with a modified context."""
 
@@ -127,6 +127,7 @@ def create_project_with_context(cookiecutter_template_path, tmp_path):
                 .replace("-", "_")
                 .replace("!", "_"),
             )
+            print(f"project slug: {project_slug}")
             project_path = Path(output_dir) / project_slug
             return project_path
         finally:

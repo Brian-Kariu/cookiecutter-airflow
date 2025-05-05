@@ -49,10 +49,8 @@ docs = [
 [tool.pyproject-fmt]
 keep_full_version = true
 
-# ==== pytest ====
-
 [tool.pytest.ini_options]
-addopts = '-v --ignore="\{\{cookiecutter.project_slug\}\}/" --tb=short'
+addopts = '-v --tb=short'
 norecursedirs = [
   ".tox",
   ".git",
@@ -60,6 +58,7 @@ norecursedirs = [
   "*/static/*",
   "docs",
   "venv",
-  "*/{{cookiecutter.project_slug}}/*",
 ]
 
+[tool.coverage.run]
+omit = ["*/tests/*", "*/dags/*"]
