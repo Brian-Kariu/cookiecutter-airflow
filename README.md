@@ -2,10 +2,11 @@
 Cookiecutter Airflow is the fastest way to get started with data orchestration with modern python tooling.
 
 [![ci](https://github.com/Brian-Kariu/cookiecutter-airflow/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Brian-Kariu/cookiecutter-airflow/actions/workflows/ci.yml)
+![codecov](https://img.shields.io/codecov/c/github/Brian-Kariu/cookiecutter-airflow)
 [![python](https://img.shields.io/badge/Python-3.12-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![license: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 ## Features
 

@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 
 import pytest
 import toml
@@ -54,18 +55,47 @@ class TestTemplateRendering:
                 "Project slug not found in pyproject.toml"
             )
 
-    @pytest.mark.skip("Only returning MIT Licenses??? 😭")
+    @pytest.mark.skip(reason="weird error")
     @pytest.mark.parametrize(
         "license_option,expected_text",
         [
-            ("MIT", ["MIT License", "Permission is hereby granted"]),
-            ("BSD", ["This software is provided 'as is'"]),
-            ("GPLv3", ["This License is intended to give you the right to share"]),
+            (
+                "MIT",
+                [
+                    "MIT License",
+                    "Permission is hereby granted",
+                    f"Copyright (c) {datetime.now().year}, John",
+                ],
+            ),
+            (
+                "BSD",
+                [
+                    f"Copyright (c) {datetime.now().year}, John",
+                    "All rights reserved.",
+                    'THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"',
+                ],
+            ),
+            (
+                "GPLv3",
+                [
+                    f"Copyright (c) {datetime.now().year}, John",
+                    "This program is free software",
+                    "You should have received a copy of the GNU General Public License",
+                ],
+            ),
             (
                 "Apache Software License 2.0",
-                ["Licensed under the Apache License, Version 2.0"],
+                [
+                    "Apache License",
+                    "Version 2.0, January 2004",
+                    "Licensed under the Apache License, Version 2.0",
+                    f"Copyright {datetime.now().year} John",
+                ],
             ),
-            ("Not open source", ["All rights reserved"]),
+            (
+                "Not open source",
+                ["All rights reserved"],
+            ),
         ],
     )
     def test_license_rendering(
@@ -78,8 +108,9 @@ class TestTemplateRendering:
         """Test that the license is rendered correctly based on the selected license."""
         context = variable_project_context(open_source_license=license_option)
         project = create_project_with_context(context)
+        print(f"Final project: {project}")
 
-        license_path = project / "LICENSE"
+        license_path = project / "LICENSE.txt"
 
         if not license_path.exists() and license_option == "Not open source":
             return  # This is acceptable for "Not open source"
